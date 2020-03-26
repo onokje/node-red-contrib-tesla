@@ -1,0 +1,83 @@
+<script type="text/javascript">
+    RED.nodes.registerType('tesla-config', {
+        category: 'config',
+        credentials: {
+            email: {type: "text"},
+            password: {type: "password"}
+        },
+        defaults: {
+            vehicleID: {value: '', required: true, validate: RED.validators.number()}
+        },
+        label: function () {
+            return this.vehicleID;
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="tesla-config">
+    <div class="form-row">
+        <label for="node-config-input-email"><i class="icon-email"></i> E-mail address</label>
+        <input type="text" id="node-config-input-email">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-password"><i class="icon-bookmark"></i> Password</label>
+        <input type="password" id="node-config-input-password">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-vehicleID"><i class="icon-bookmark"></i> VehicleId</label>
+        <input type="text" id="node-config-input-vehicleID">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('tesla-get-data', {
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            teslaConfig: {value: "", type: "tesla-config"},
+            command: {value: "", required: false},
+            name: {value: ""}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "tesla.png",
+        label: function () {
+            return this.name || "tesla get data";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="tesla-get-data">
+    <div class="form-row">
+        <label for="node-input-teslaConfig"><i class="icon-tag"></i> Tesla device</label>
+        <input type="text" id="node-input-teslaConfig" placeholder="Select tesla device">
+    </div>
+    <p>You can also send msg.command to set the command. If msg.command is set, it will overwrite any choice set below.</p>
+    <div class="form-row">
+        <label for="node-input-command"><i class="icon-tag"></i> Command</label>
+        <select id="node-input-command">
+            <option value="vehicles">vehicles - A list of all vehicles available in your account</option>
+            <option value="vehicle">vehicle - retrieve general vehicle information</option>
+            <option value="vehicleData">vehicleData - retrieve all vehicle state data in a single call</option>
+            <option value="chargeState">chargeState - retrieve the charge_state data</option>
+            <option value="climateState">climateState - retrieve the climate_state data</option>
+            <option value="vehicleConfig">vehicleConfig - retrieve the vehicle_config data</option>
+            <option value="vehicleState">vehicleState - retrieve the vehicle_state data</option>
+            <option value="driveState">driveState - retrieve the drive_state data</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+</script>
+
+<script type="text/html" data-help-name="tesla-get-data">
+    <p>A node that retrieves data from the tesla api, and sends commands.</p>
+    <h2>Input:</h2>
+    <p>The msg.command property can be set to override which command to send. See below for a list of valid commands.</p>
+    <h2>Output</h2>
+    <p>The msg.payload property will be set to the command output. The structure varies per command. Any other msg properties will be left intact.</p>
+    <h2>Command list</h2>
+</script>
