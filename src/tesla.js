@@ -45,13 +45,15 @@ module.exports = function (RED) {
         }
     };
 
-    const doCommandAndAutoWake = async (command, authToken, vehicleID, autoWakeUp) => {
+    const doCommandAndAutoWake = async (command, authToken, vehicleID, autoWakeUp, commandArgs) => {
         if (autoWakeUp) {
             const vehicleData = await tjs.vehicleAsync({authToken, vehicleID});
             if (vehicleData.state === "asleep") {
                 const wakeupResult = await tjs.wakeUpAsync({authToken, vehicleID});
+                await new Promise((resolve => setTimeout(() => resolve(), 1000)));
             }
         }
+
         switch (command) {
             case 'vehicleData': return tjs.vehicleDataAsync({authToken, vehicleID});
             case 'chargeState': return tjs.chargeStateAsync({authToken, vehicleID});
@@ -59,6 +61,51 @@ module.exports = function (RED) {
             case 'vehicleConfig': return tjs.vehicleConfigAsync({authToken, vehicleID});
             case 'vehicleState': return tjs.vehicleStateAsync({authToken, vehicleID});
             case 'driveState': return tjs.driveStateAsync({authToken, vehicleID});
+            case 'guiSettings': return tjs.guiSettingsAsync({authToken, vehicleID});
+            case 'wakeUp': return tjs.wakeUpAsync({authToken, vehicleID});
+            case 'chargeStandard': return tjs.chargeStandardAsync({authToken, vehicleID});
+            case 'chargeMaxRange': return tjs.chargeMaxRangeAsync({authToken, vehicleID});
+            case 'doorLock': return tjs.doorLockAsync({authToken, vehicleID});
+            case 'doorUnlock': return tjs.doorUnlockAsync({authToken, vehicleID});
+            case 'climateStart': return tjs.climateStartAsync({authToken, vehicleID});
+            case 'climateStop': return tjs.climateStopAsync({authToken, vehicleID});
+            case 'flashLights': return tjs.flashLightsAsync({authToken, vehicleID});
+            case 'honkHorn': return tjs.honkHornAsync({authToken, vehicleID});
+            case 'maxDefrost': return tjs.maxDefrostAsync({authToken, vehicleID});
+            case 'mediaTogglePlayback': return tjs.mediaTogglePlaybackAsync({authToken, vehicleID});
+            case 'mediaPlayNext': return tjs.mediaPlayNextAsync({authToken, vehicleID});
+            case 'mediaPlayPrevious': return tjs.mediaPlayPreviousAsync({authToken, vehicleID});
+            case 'mediaPlayNextFavorite': return tjs.mediaPlayNextFavoriteAsync({authToken, vehicleID});
+            case 'mediaPlayPreviousFavorite': return tjs.mediaPlayPreviousFavoriteAsync({authToken, vehicleID});
+            case 'mediaVolumeUp': return tjs.mediaVolumeUpAsync({authToken, vehicleID});
+            case 'mediaVolumeDown': return tjs.mediaVolumeDownAsync({authToken, vehicleID});
+            case 'mobileEnabled': return tjs.mobileEnabledAsync({authToken, vehicleID});
+            case 'navigationRequest': return tjs.navigationRequestAsync({authToken, vehicleID}, commandArgs.subject, commandArgs.text, commandArgs.locale);
+            case 'nearbyChargers': return tjs.nearbyChargersAsync({authToken, vehicleID});
+            case 'openChargePort': return tjs.openChargePortAsync({authToken, vehicleID});
+            case 'openTrunk': return tjs.openTrunkAsync({authToken, vehicleID});
+            case 'remoteStart': return tjs.remoteStartAsync({authToken, vehicleID}, commandArgs.password);
+            case 'resetValetPin': return tjs.resetValetPinAsync({authToken, vehicleID});
+            case 'scheduleSoftwareUpdate': return tjs.scheduleSoftwareUpdateAsync({authToken, vehicleID}, commandArgs.offset);
+            case 'seatHeater': return tjs.seatHeaterAsync({authToken, vehicleID}, commandArgs.heater, commandArgs.level);
+            case 'setChargeLimit': return tjs.setChargeLimitAsync({authToken, vehicleID}, commandArgs.amt);
+            case 'setSentryMode': return tjs.setSentryModeAsync({authToken, vehicleID}, commandArgs.onoff);
+            case 'setTemps': return tjs.setTempsAsync({authToken, vehicleID}, commandArgs.driver, commandArgs.pass);
+            case 'setValetMode': return tjs.setValetModeAsync({authToken, vehicleID}, commandArgs.onoff, commandArgs.pin);
+            case 'speedLimitActivate': return tjs.speedLimitActivateAsync({authToken, vehicleID}, commandArgs.pin);
+            case 'speedLimitDeactivate': return tjs.speedLimitDeactivateAsync({authToken, vehicleID}, commandArgs.pin);
+            case 'speedLimitClearPin': return tjs.speedLimitClearPinAsync({authToken, vehicleID}, commandArgs.pin);
+            case 'speedLimitSetLimit': return tjs.speedLimitSetLimitAsync({authToken, vehicleID}, commandArgs.limit);
+            case 'startCharge': return tjs.startChargeAsync({authToken, vehicleID});
+            case 'steeringHeater': return tjs.steeringHeaterAsync({authToken, vehicleID}, commandArgs.level);
+            case 'stopCharge': return tjs.stopChargeAsync({authToken, vehicleID});
+            case 'sunRoofControl': return tjs.sunRoofControlAsync({authToken, vehicleID}, commandArgs.state);
+            case 'sunRoofMove': return tjs.sunRoofMoveAsync({authToken, vehicleID}, commandArgs.percent);
+            case 'windowControl': return tjs.windowControlAsync({authToken, vehicleID}, commandArgs.command);
+            case 'vinDecode': return tjs.vinDecode(await tjs.vehicleAsync({authToken, vehicleID}));
+            case 'getModel': return tjs.getModel(await tjs.vehicleAsync({authToken, vehicleID}));
+            case 'getPaintColor': return tjs.getPaintColor(await tjs.vehicleAsync({authToken, vehicleID}));
+
             default:
                 throw Error(`Invalid command specified: ${command}`);
         }
@@ -102,6 +149,10 @@ module.exports = function (RED) {
                 const {vehicleID} = node.teslaConfig;
                 const command = msg.command || config.command;
                 const {email, password} = node.teslaConfig.credentials;
+                const { commandArgs } = msg;
+                if (command === 'remoteStart') {
+                    commandArgs.password = password;
+                }
 
                 try {
                     const authToken = await getToken(email, password);
@@ -110,7 +161,7 @@ module.exports = function (RED) {
                     } else if (command === 'vehicles') {
                         msg.payload = await tjs.vehicleAsync({authToken, vehicleID});
                     } else {
-                        msg.payload = await doCommandAndAutoWake(command, authToken, vehicleID, true);
+                        msg.payload = await doCommandAndAutoWake(command, authToken, vehicleID, true, commandArgs);
                     }
 
                     send(msg);

@@ -64,6 +64,50 @@
             <option value="vehicleConfig">vehicleConfig - retrieve the vehicle_config data</option>
             <option value="vehicleState">vehicleState - retrieve the vehicle_state data</option>
             <option value="driveState">driveState - retrieve the drive_state data</option>
+            <option value="guiSettings">guiSettings</option>
+            <option value="wakeUp">wakeUp</option>
+            <option value="chargeStandard">chargeStandard</option>
+            <option value="chargeMaxRange">chargeMaxRange</option>
+            <option value="doorLock">doorLock</option>
+            <option value="doorUnlock">doorUnlock</option>
+            <option value="climateStart">climateStart</option>
+            <option value="climateStop">climateStop</option>
+            <option value="flashLights">flashLights</option>
+            <option value="honkHorn">honkHorn</option>
+            <option value="maxDefrost">maxDefrost</option>
+            <option value="mediaTogglePlayback">mediaTogglePlayback</option>
+            <option value="mediaPlayNext">mediaPlayNext</option>
+            <option value="mediaPlayPrevious">mediaPlayPrevious</option>
+            <option value="mediaPlayNextFavorite">mediaPlayNextFavorite</option>
+            <option value="mediaPlayPreviousFavorite">mediaPlayPreviousFavorite</option>
+            <option value="mediaVolumeUp">mediaVolumeUp</option>
+            <option value="mediaVolumeDown">mediaVolumeDown</option>
+            <option value="mobileEnabled">mobileEnabled</option>
+            <option value="navigationRequest">navigationRequest</option>
+            <option value="nearbyChargers">nearbyChargers</option>
+            <option value="openChargePort">openChargePort</option>
+            <option value="openTrunk">openTrunk</option>
+            <option value="remoteStart">remoteStart</option>
+            <option value="resetValetPin">resetValetPin</option>
+            <option value="scheduleSoftwareUpdate">scheduleSoftwareUpdate</option>
+            <option value="seatHeater">seatHeater</option>
+            <option value="setChargeLimit">setChargeLimit</option>
+            <option value="setSentryMode">setSentryMode</option>
+            <option value="setTemps">setTemps</option>
+            <option value="setValetMode">setValetMode</option>
+            <option value="speedLimitActivate">speedLimitActivate</option>
+            <option value="speedLimitDeactivate">speedLimitDeactivate</option>
+            <option value="speedLimitClearPin">speedLimitClearPin</option>
+            <option value="speedLimitSetLimit">speedLimitSetLimit</option>
+            <option value="startCharge">startCharge</option>
+            <option value="steeringHeater">steeringHeater</option>
+            <option value="stopCharge">stopCharge</option>
+            <option value="sunRoofControl">sunRoofControl</option>
+            <option value="sunRoofMove">sunRoofMove</option>
+            <option value="windowControl">windowControl</option>
+            <option value="vinDecode">vinDecode</option>
+            <option value="getModel">getModel</option>
+            <option value="getPaintColor">getPaintColor</option>
         </select>
     </div>
     <div class="form-row">
@@ -77,7 +121,70 @@
     <p>A node that retrieves data from the tesla api, and sends commands.</p>
     <h2>Input:</h2>
     <p>The msg.command property can be set to override which command to send. See below for a list of valid commands.</p>
+    <p>Some commands need additional data. Example: The setChargeLimit command requires the amt argument (an integer representing the target charge percentage). If this is the case, wrap the arguments in a commandArgs object and set that to the msg object. In the above example, set mgs.commandArgs.amt to a number between 50 and 100.</p>
     <h2>Output</h2>
     <p>The msg.payload property will be set to the command output. The structure varies per command. Any other msg properties will be left intact.</p>
     <h2>Command list</h2>
+    <p>Look for more information about the commands on <a target="_blank" href="https://github.com/mseminatore/TeslaJS/blob/master/docs/DOCS.md#functions">this page</a>.</p>
+    <table>
+        <thead>
+        <tr>
+            <td>Command name</td><td>Description</td><td>arguments</td>
+        </tr>
+        </thead>
+        <tbody>
+            <tr><td>vehicles</td><td>A list of all vehicles available in your account</td><td></td></tr>
+            <tr><td>vehicle</td><td>retrieve general vehicle information</td><td></td></tr>
+            <tr><td>vehicleData</td><td>retrieve all vehicle state data in a single call</td><td></td></tr>
+            <tr><td>chargeState</td><td>retrieve the charge_state data</td><td></td></tr>
+            <tr><td>climateState</td><td>retrieve the climate_state data</td><td></td></tr>
+            <tr><td>vehicleConfig</td><td>retrieve the vehicle_config data</td><td></td></tr>
+            <tr><td>vehicleState</td><td>retrieve the vehicle_state data</td><td></td></tr>
+            <tr><td>driveState</td><td>retrieve the drive_state data</td><td></td></tr>
+            <tr><td>guiSettings</td><td>guiSettings</td><td></td></tr>
+            <tr><td>wakeUp</td><td>wakeUp</td><td></td></tr>
+            <tr><td>chargeStandard</td><td>chargeStandard</td><td></td></tr>
+            <tr><td>chargeMaxRange</td><td>chargeMaxRange</td><td></td></tr>
+            <tr><td>doorLock</td><td>doorLock</td><td></td></tr>
+            <tr><td>doorUnlock</td><td>doorUnlock</td><td></td></tr>
+            <tr><td>climateStart</td><td>climateStart</td><td></td></tr>
+            <tr><td>climateStop</td><td>climateStop</td><td></td></tr>
+            <tr><td>flashLights</td><td>flashLights</td><td></td></tr>
+            <tr><td>honkHorn</td><td>honkHorn</td><td></td></tr>
+            <tr><td>maxDefrost</td><td>maxDefrost</td><td></td></tr>
+            <tr><td>mediaTogglePlayback</td><td>mediaTogglePlayback</td><td></td></tr>
+            <tr><td>mediaPlayNext</td><td>mediaPlayNext</td><td></td></tr>
+            <tr><td>mediaPlayPrevious</td><td>mediaPlayPrevious</td><td></td></tr>
+            <tr><td>mediaPlayNextFavorite</td><td>mediaPlayNextFavorite</td><td></td></tr>
+            <tr><td>mediaPlayPreviousFavorite</td><td>mediaPlayPreviousFavorite</td><td></td></tr>
+            <tr><td>mediaVolumeUp</td><td>mediaVolumeUp</td><td></td></tr>
+            <tr><td>mediaVolumeDown</td><td>mediaVolumeDown</td><td></td></tr>
+            <tr><td>mobileEnabled</td><td>mobileEnabled</td><td></td></tr>
+            <tr><td>navigationRequest</td><td>navigationRequest</td><td>subject, text, locale</td></tr>
+            <tr><td>nearbyChargers</td><td>nearbyChargers</td><td></td></tr>
+            <tr><td>openChargePort</td><td>openChargePort</td><td></td></tr>
+            <tr><td>openTrunk</td><td>openTrunk</td><td></td></tr>
+            <tr><td>remoteStart</td><td>remoteStart</td><td></td></tr>
+            <tr><td>resetValetPin</td><td>resetValetPin</td><td></td></tr>
+            <tr><td>scheduleSoftwareUpdate</td><td>scheduleSoftwareUpdate</td><td>offset</td></tr>
+            <tr><td>seatHeater</td><td>seatHeater</td><td>heater, level</td></tr>
+            <tr><td>setChargeLimit</td><td>setChargeLimit</td><td>amt</td></tr>
+            <tr><td>setSentryMode</td><td>setSentryMode</td><td>onoff</td></tr>
+            <tr><td>setTemps</td><td>setTemps</td><td>driver, pass</td></tr>
+            <tr><td>setValetMode</td><td>setValetMode</td><td>onoff, pin</td></tr>
+            <tr><td>speedLimitActivate</td><td>speedLimitActivate</td><td>pin</td></tr>
+            <tr><td>speedLimitDeactivate</td><td>speedLimitDeactivate</td><td>pin</td></tr>
+            <tr><td>speedLimitClearPin</td><td>speedLimitClearPin</td><td>pin</td></tr>
+            <tr><td>speedLimitSetLimit</td><td>speedLimitSetLimit</td><td>limit</td></tr>
+            <tr><td>startCharge</td><td>startCharge</td><td></td></tr>
+            <tr><td>steeringHeater</td><td>steeringHeater</td><td>level</td></tr>
+            <tr><td>stopCharge</td><td>stopCharge</td><td></td></tr>
+            <tr><td>sunRoofControl</td><td>sunRoofControl</td><td>state</td></tr>
+            <tr><td>sunRoofMove</td><td>sunRoofMove</td><td>percent</td></tr>
+            <tr><td>windowControl</td><td>windowControl</td><td>command</td></tr>
+            <tr><td>vinDecode</td><td>vinDecode</td><td></td></tr>
+            <tr><td>getModel</td><td>getModel</td><td></td></tr>
+            <tr><td>getPaintColor</td><td>getPaintColor</td><td></td></tr>
+        </tbody>
+    </table>
 </script>
