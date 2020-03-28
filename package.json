@@ -1,13 +1,14 @@
 {
   "name": "node-red-contrib-tesla",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Node red module to control Tesla vehicles and devices",
+  "keywords": [ "node-red", "tesla" ],
+  "main": "src/tesla.js.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Martin Schimmel",
+  "license": "MIT",
   "node-red": {
     "nodes": {
       "tesla": "src/tesla.js"

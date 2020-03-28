@@ -1,0 +1,126 @@
+[
+  {
+    "id": "3cfb37eb.058a18",
+    "type": "tab",
+    "label": "Flow 1",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "ae022a08.b89628",
+    "type": "tesla-config",
+    "z": "",
+    "vehicleID": "123456789132456789"
+  },
+  {
+    "id": "ca787ae.210ef88",
+    "type": "inject",
+    "z": "3cfb37eb.058a18",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 140,
+    "y": 280,
+    "wires": [
+      [
+        "98878446.1ca2f8"
+      ]
+    ]
+  },
+  {
+    "id": "422c8907.b12318",
+    "type": "debug",
+    "z": "3cfb37eb.058a18",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "false",
+    "x": 830,
+    "y": 280,
+    "wires": []
+  },
+  {
+    "id": "534bc876.5da308",
+    "type": "inject",
+    "z": "3cfb37eb.058a18",
+    "name": "",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "x": 120,
+    "y": 360,
+    "wires": [
+      [
+        "e4a9920a.132d8"
+      ]
+    ]
+  },
+  {
+    "id": "e4a9920a.132d8",
+    "type": "change",
+    "z": "3cfb37eb.058a18",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "commandArgs.amt",
+        "pt": "msg",
+        "to": "85",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 320,
+    "y": 360,
+    "wires": [
+      [
+        "5d38a1b3.84bd1"
+      ]
+    ]
+  },
+  {
+    "id": "98878446.1ca2f8",
+    "type": "tesla-api",
+    "z": "3cfb37eb.058a18",
+    "teslaConfig": "ae022a08.b89628",
+    "command": "vehicleData",
+    "name": "Tesla get vehicle data",
+    "x": 400,
+    "y": 280,
+    "wires": [
+      [
+        "422c8907.b12318"
+      ]
+    ]
+  },
+  {
+    "id": "5d38a1b3.84bd1",
+    "type": "tesla-api",
+    "z": "3cfb37eb.058a18",
+    "teslaConfig": "ae022a08.b89628",
+    "command": "setChargeLimit",
+    "name": "Tesla set charge limit",
+    "x": 600,
+    "y": 340,
+    "wires": [
+      [
+        "422c8907.b12318"
+      ]
+    ]
+  }
+]
