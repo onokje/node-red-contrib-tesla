@@ -2,7 +2,10 @@
   "name": "node-red-contrib-tesla",
   "version": "1.0.0",
   "description": "Node red module to control Tesla vehicles and devices",
-  "keywords": [ "node-red", "tesla" ],
+  "keywords": [
+    "node-red",
+    "tesla"
+  ],
   "main": "src/tesla.js.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +18,6 @@
     }
   },
   "dependencies": {
-    "fs-extra": "^9.0.0",
     "teslajs": "^4.7.7"
   }
 }
