@@ -6,7 +6,7 @@
             password: {type: "password"}
         },
         defaults: {
-            vehicleID: {value: '', required: true, validate: RED.validators.number()}
+            vehicleID: {value: '', required: false, validate: RED.validators.number()}
         },
         label: function () {
             return this.vehicleID;
@@ -30,9 +30,9 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('tesla-get-data', {
+    RED.nodes.registerType('tesla-api', {
         category: 'function',
-        color: '#cf233c',
+        color: '#ff5d62',
         defaults: {
             teslaConfig: {value: "", type: "tesla-config"},
             command: {value: "", required: false},
@@ -42,12 +42,12 @@
         outputs: 1,
         icon: "tesla.png",
         label: function () {
-            return this.name || "tesla get data";
+            return this.name || "tesla api";
         }
     });
 </script>
 
-<script type="text/html" data-template-name="tesla-get-data">
+<script type="text/html" data-template-name="tesla-api">
     <div class="form-row">
         <label for="node-input-teslaConfig"><i class="icon-tag"></i> Tesla device</label>
         <input type="text" id="node-input-teslaConfig" placeholder="Select tesla device">
@@ -117,8 +117,8 @@
 
 </script>
 
-<script type="text/html" data-help-name="tesla-get-data">
-    <p>A node that retrieves data from the tesla api, and sends commands.</p>
+<script type="text/html" data-help-name="tesla-api">
+    <p>A node that can retrieve data and send commands to the tesla api.</p>
     <h2>Input:</h2>
     <p>The msg.command property can be set to override which command to send. See below for a list of valid commands.</p>
     <p>Some commands need additional data. Example: The setChargeLimit command requires the amt argument (an integer representing the target charge percentage). If this is the case, wrap the arguments in a commandArgs object and set that to the msg object. In the above example, set mgs.commandArgs.amt to a number between 50 and 100.</p>
@@ -129,7 +129,7 @@
     <table>
         <thead>
         <tr>
-            <td>Command name</td><td>Description</td><td>arguments</td>
+            <th>Command name</th><th>Description</th><th>arguments</th>
         </tr>
         </thead>
         <tbody>

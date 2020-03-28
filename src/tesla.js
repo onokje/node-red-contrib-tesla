@@ -48,7 +48,7 @@ module.exports = function (RED) {
     const doCommandAndAutoWake = async (command, authToken, vehicleID, autoWakeUp, commandArgs) => {
         if (autoWakeUp) {
             const vehicleData = await tjs.vehicleAsync({authToken, vehicleID});
-            if (vehicleData.state === "asleep") {
+            if (vehicleData.state && vehicleData.state === "asleep") {
                 const wakeupResult = await tjs.wakeUpAsync({authToken, vehicleID});
                 await new Promise((resolve => setTimeout(() => resolve(), 1000)));
             }
@@ -135,7 +135,7 @@ module.exports = function (RED) {
         }
     });
 
-    function GetDataNode(config) {
+    function TeslaApiNode(config) {
         RED.nodes.createNode(this, config);
 
         this.teslaConfig = RED.nodes.getNode(config.teslaConfig);
@@ -158,7 +158,7 @@ module.exports = function (RED) {
                     const authToken = await getToken(email, password);
                     if (command === 'vehicles') {
                         msg.payload = await tjs.vehiclesAsync({authToken});
-                    } else if (command === 'vehicles') {
+                    } else if (command === 'vehicle') {
                         msg.payload = await tjs.vehicleAsync({authToken, vehicleID});
                     } else {
                         msg.payload = await doCommandAndAutoWake(command, authToken, vehicleID, true, commandArgs);
@@ -181,5 +181,5 @@ module.exports = function (RED) {
 
     }
 
-    RED.nodes.registerType("tesla-get-data", GetDataNode);
+    RED.nodes.registerType("tesla-api", TeslaApiNode);
 };
