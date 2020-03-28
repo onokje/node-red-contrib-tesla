@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-tesla",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Node red module to control Tesla vehicles and devices",
   "keywords": [
     "node-red",
@@ -19,5 +19,6 @@
   },
   "dependencies": {
     "teslajs": "^4.7.7"
-  }
+  },
+  "repository": "https://github.com/onokje/node-red-contrib-tesla"
 }
