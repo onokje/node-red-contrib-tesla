@@ -12,7 +12,7 @@ module.exports = function (RED) {
     const getCredHash = (email, password) => crypto.createHash('md5')
         .update(email + password).digest('base64');
 
-    const getNewToken = async (email, password) => {
+    const getNewTokenFromApi = async (email, password) => {
         const credHash = getCredHash(email, password);
         const token = await tjs.loginAsync(email, password)
             .then(res => {
@@ -26,21 +26,20 @@ module.exports = function (RED) {
             localUserCache[credHash] = token;
             return token;
         }
-        throw Error('Get access token failed');
+        throw Error('Tesla API: Get access token failed');
     };
 
     const getToken = async (email, password) => {
         const credHash = getCredHash(email, password);
         if (!localUserCache.hasOwnProperty(credHash)) {
-            console.log('geen token gevonden, ga nu call doen');
-            return getNewToken(email, password).then(token => token.access_token);
+            console.debug('Tesla API: No token found. Getting new token now...');
+            return getNewTokenFromApi(email, password).then(token => token.access_token);
         } else {
             if (isTokenValid(localUserCache[credHash])) {
-                console.log('geldig token gevonden. ik gebruik deze.');
                 return Promise.resolve(localUserCache[credHash]).then(token => token.access_token);
             } else {
-                console.log('token gevonden maar niet meer geldig. ga nu call doen..');
-                return getNewToken(email, password).then(token => token.access_token);
+                console.debug('Tesla API: Token found but expired. Getting new token now...');
+                return getNewTokenFromApi(email, password).then(token => token.access_token);
             }
         }
     };
@@ -107,7 +106,7 @@ module.exports = function (RED) {
             case 'getPaintColor': return tjs.getPaintColor(await tjs.vehicleAsync({authToken, vehicleID}));
 
             default:
-                throw Error(`Invalid command specified: ${command}`);
+                throw Error(`Tesla API: Invalid command specified: ${command}`);
         }
 
     };
@@ -123,8 +122,8 @@ module.exports = function (RED) {
                 password: this.credentials.password
             };
             getToken(this.credentials.email, this.credentials.password)
-                .then(() => console.log('Tesla login success'))
-                .catch(err => console.error('Tesla login failed context:', err));
+                .then(() => console.debug('Tesla API: Login success'))
+                .catch(err => console.error('Tesla API: Login failed, context:', err));
         }
     }
 
@@ -156,12 +155,18 @@ module.exports = function (RED) {
 
                 try {
                     const authToken = await getToken(email, password);
-                    if (command === 'vehicles') {
-                        msg.payload = await tjs.vehiclesAsync({authToken});
-                    } else if (command === 'vehicle') {
-                        msg.payload = await tjs.vehicleAsync({authToken, vehicleID});
-                    } else {
-                        msg.payload = await doCommandAndAutoWake(command, authToken, vehicleID, true, commandArgs);
+                    switch (command) {
+                        case 'vehicles':
+                            msg.payload = await tjs.vehiclesAsync({authToken});
+                            break;
+                        case 'vehicle':
+                            msg.payload = await tjs.vehicleAsync({authToken, vehicleID});
+                            break;
+                        case 'wakeUp':
+                            msg.payload = await tjs.vehicleAsync({authToken, vehicleID});
+                            break;
+                        default:
+                            msg.payload = await doCommandAndAutoWake(command, authToken, vehicleID, true, commandArgs);
                     }
 
                     send(msg);
@@ -176,7 +181,7 @@ module.exports = function (RED) {
                 }
             });
         } else {
-            node.warn('No tesla config defined');
+            node.warn('Tesla API: No tesla config defined');
         }
 
     }
