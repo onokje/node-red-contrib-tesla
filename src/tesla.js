@@ -44,16 +44,22 @@ module.exports = function (RED) {
         }
     };
 
+    const wakeUp = async (authToken, vehicleID) => {
+        const vehicleData = await tjs.vehicleAsync({authToken, vehicleID});
+        if (vehicleData.state && vehicleData.state === "asleep") {
+            const wakeupResult = await tjs.wakeUpAsync({authToken, vehicleID});
+            await new Promise((resolve => setTimeout(() => resolve(), 1000)));
+        }
+    }
+
     const doCommandAndAutoWake = async (command, authToken, vehicleID, autoWakeUp, commandArgs) => {
-        if (autoWakeUp) {
-            const vehicleData = await tjs.vehicleAsync({authToken, vehicleID});
-            if (vehicleData.state && vehicleData.state === "asleep") {
-                const wakeupResult = await tjs.wakeUpAsync({authToken, vehicleID});
-                await new Promise((resolve => setTimeout(() => resolve(), 1000)));
-            }
+        const commandsNoWakeup = ['vehicle', 'wakeUp'];
+        if (autoWakeUp && !commandsNoWakeup.includes(command)) {
+            await wakeUp(authToken, vehicleID);
         }
 
         switch (command) {
+            case 'vehicle': return tjs.vehicleAsync({authToken, vehicleID});
             case 'vehicleData': return tjs.vehicleDataAsync({authToken, vehicleID});
             case 'chargeState': return tjs.chargeStateAsync({authToken, vehicleID});
             case 'climateState': return tjs.climateStateAsync({authToken, vehicleID});
@@ -155,18 +161,10 @@ module.exports = function (RED) {
 
                 try {
                     const authToken = await getToken(email, password);
-                    switch (command) {
-                        case 'vehicles':
-                            msg.payload = await tjs.vehiclesAsync({authToken});
-                            break;
-                        case 'vehicle':
-                            msg.payload = await tjs.vehicleAsync({authToken, vehicleID});
-                            break;
-                        case 'wakeUp':
-                            msg.payload = await tjs.vehicleAsync({authToken, vehicleID});
-                            break;
-                        default:
-                            msg.payload = await doCommandAndAutoWake(command, authToken, vehicleID, true, commandArgs);
+                    if (command === 'vehicles') {
+                        msg.payload = await tjs.vehiclesAsync({authToken});
+                    } else {
+                        msg.payload = await doCommandAndAutoWake(command, authToken, vehicleID, true, commandArgs);
                     }
 
                     send(msg);

@@ -35,3 +35,6 @@ You have probably used the wrong vehicle Id. Use the vehicles command and use th
 
 #### I am getting a 408 response
 This means that your vehicle didn't respond quickly enough. It happens when your vehicle was just woken up. Just wait 3 seconds and try it again.
+
+#### I am using MFA (Multi Factor Authentication), where can I enter my token? 
+This library only partially supports the new (v3) Tesla authentication flow. It works if you don't use MFA, but otherwise you are out of luck for now. I am planning to add support for MFA tokens soon.
