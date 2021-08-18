@@ -3,10 +3,11 @@
         category: 'config',
         credentials: {
             email: {type: "text"},
-            password: {type: "password"}
+            password: {type: "password"},
+            manualToken: {type: "password"}
         },
         defaults: {
-            vehicleID: {value: '', required: false, validate: RED.validators.number()}
+            vehicleID: {value: '', required: false, validate: RED.validators.number()},
         },
         label: function () {
             return this.vehicleID;
@@ -22,6 +23,10 @@
     <div class="form-row">
         <label for="node-config-input-password"><i class="icon-bookmark"></i> Password</label>
         <input type="password" id="node-config-input-password">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-manualToken"><i class="icon-bookmark"></i> Manual Access token</label>
+        <input type="password" id="node-config-input-manualToken">
     </div>
     <div class="form-row">
         <label for="node-config-input-vehicleID"><i class="icon-bookmark"></i> VehicleId</label>

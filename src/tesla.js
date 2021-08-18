@@ -136,7 +136,8 @@ module.exports = function (RED) {
     RED.nodes.registerType("tesla-config", TeslaConfigNode, {
         credentials: {
             email: {type: "text"},
-            password: {type: "password"}
+            password: {type: "password"},
+            manualToken: {type: "password"}
         }
     });
 
@@ -153,14 +154,16 @@ module.exports = function (RED) {
                 };
                 const {vehicleID} = node.teslaConfig;
                 const command = msg.command || config.command;
-                const {email, password} = node.teslaConfig.credentials;
+
+                // TODO: Remove manual token when auth flow is fixed in TeslaJs
+                const {email, password, manualToken} = node.teslaConfig.credentials;
                 const { commandArgs } = msg;
                 if (command === 'remoteStart') {
                     commandArgs.password = password;
                 }
 
                 try {
-                    const authToken = await getToken(email, password);
+                    const authToken = manualToken ? manualToken : await getToken(email, password);
                     if (command === 'vehicles') {
                         msg.payload = await tjs.vehiclesAsync({authToken});
                     } else {
