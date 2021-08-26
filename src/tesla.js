@@ -88,7 +88,8 @@ module.exports = function (RED) {
             case 'navigationRequest': return tjs.navigationRequestAsync({authToken, vehicleID}, commandArgs.subject, commandArgs.text, commandArgs.locale);
             case 'nearbyChargers': return tjs.nearbyChargersAsync({authToken, vehicleID});
             case 'openChargePort': return tjs.openChargePortAsync({authToken, vehicleID});
-            case 'openTrunk': return tjs.openTrunkAsync({authToken, vehicleID});
+            case 'openFrunk': return tjs.openTrunkAsync({authToken, vehicleID}, "frunk");
+            case 'openTrunk': return tjs.openTrunkAsync({authToken, vehicleID}, "trunk");
             case 'remoteStart': return tjs.remoteStartAsync({authToken, vehicleID}, commandArgs.password);
             case 'resetValetPin': return tjs.resetValetPinAsync({authToken, vehicleID});
             case 'scheduleSoftwareUpdate': return tjs.scheduleSoftwareUpdateAsync({authToken, vehicleID}, commandArgs.offset);
