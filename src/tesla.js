@@ -95,6 +95,9 @@ module.exports = function (RED) {
             case 'scheduleSoftwareUpdate': return tjs.scheduleSoftwareUpdateAsync({authToken, vehicleID}, commandArgs.offset);
             case 'seatHeater': return tjs.seatHeaterAsync({authToken, vehicleID}, commandArgs.heater, commandArgs.level);
             case 'setChargeLimit': return tjs.setChargeLimitAsync({authToken, vehicleID}, commandArgs.amt);
+            case 'setChargingAmps': return tjs.setChargingAmpsAsync({authToken, vehicleID}, commandArgs.amps);
+            case 'setScheduledCharging': return tjs.setScheduledChargingAsync({authToken, vehicleID}, commandArgs.enable, commandArgs.time);
+            case 'setScheduledDeparture': return tjs.setScheduledDepartureAsync({authToken, vehicleID}, commandArgs.enable, commandArgs.departure_time, commandArgs.preconditioning_enabled, commandArgs.preconditioning_weekdays_only, commandArgs.off_peak_charging_enabled, commandArgs.off_peak_charging_weekdays_only, commandArgs.end_off_peak_time);
             case 'setSentryMode': return tjs.setSentryModeAsync({authToken, vehicleID}, commandArgs.onoff);
             case 'setTemps': return tjs.setTempsAsync({authToken, vehicleID}, commandArgs.driver, commandArgs.pass);
             case 'setValetMode': return tjs.setValetModeAsync({authToken, vehicleID}, commandArgs.onoff, commandArgs.pin);
