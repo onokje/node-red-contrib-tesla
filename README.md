@@ -3,7 +3,7 @@
 Node red nodes for controlling and communicating with Tesla devices, like the Model 3 and Model S electric cars. Based on the [TeslaJS](https://github.com/mseminatore/TeslaJS) library.
 
 ## How to install:
-Run `npm install node-red-contrib-tesla --save` or just install it from the Node-red dashboard (manage palette).
+Run `npm install @gaphi/node-red-contrib-tesla --save` or just install it from the Node-red dashboard (manage palette).
 
 ## How to use:
 This package only has one node (and one configuration node). You don't have to worry about auth tokens, it will be handled automatically. 

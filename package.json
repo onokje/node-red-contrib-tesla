@@ -1,24 +1,52 @@
 {
-  "name": "node-red-contrib-tesla",
-  "version": "1.0.5",
+  "_from": "github:GaPhi/node-red-contrib-tesla",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/node-red-contrib-tesla",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "GaPhi/node-red-contrib-tesla",
+    "rawSpec": "GaPhi/node-red-contrib-tesla",
+    "saveSpec": "github:GaPhi/node-red-contrib-tesla",
+    "fetchSpec": null,
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "github:GaPhi/node-red-contrib-tesla#31a4ce0a2d68e8714259b4cb2719956aec0e1b02",
+  "_spec": "GaPhi/node-red-contrib-tesla",
+  "_where": "/data/node_modules",
+  "author": "Philippe Gresse-Lugue",
+  "bugs": {
+    "url": "https://github.com/GaPhi/node-red-contrib-tesla/issues"
+  },
+  "dependencies": {
+    "@gaphi/teslajs": "^4.9.12"
+  },
+  "deprecated": false,
   "description": "Node red module to control Tesla vehicles and devices",
+  "homepage": "https://github.com/GaPhi/node-red-contrib-tesla#readme",
   "keywords": [
     "node-red",
     "tesla"
   ],
-  "main": "src/tesla.js.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Martin Schimmel",
   "license": "MIT",
+  "main": "src/tesla.js.js",
+  "name": "@gaphi/node-red-contrib-tesla",
   "node-red": {
     "nodes": {
       "tesla": "src/tesla.js"
     }
   },
-  "dependencies": {
-    "teslajs": "^4.9.11"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GaPhi/node-red-contrib-tesla.git"
   },
-  "repository": "https://github.com/onokje/node-red-contrib-tesla"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.6-2"
 }
