@@ -1,7 +1,7 @@
 module.exports = function (RED) {
 
     const crypto = require('crypto');
-    const tjs = require('teslajs');
+    const tjs = require('@gaphi/teslajs');
 
     var localUserCache = {};
 

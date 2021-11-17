@@ -1,28 +1,36 @@
 {
-  "_from": "github:GaPhi/node-red-contrib-tesla",
+  "_from": "@gaphi/node-red-contrib-tesla@1.0.6-5",
+  "_id": "@gaphi/node-red-contrib-tesla@1.0.6-5",
   "_inBundle": false,
-  "_integrity": "",
-  "_location": "/node-red-contrib-tesla",
+  "_integrity": "sha512-+/wyoeXS38BqAWCbhmKjEdlklXxglXXxW9VcaZdsORbtaYuhOSJdX5GoDTHJEuBmml/ff4VEhFHKCfJH5TqlEg==",
+  "_location": "/@gaphi/node-red-contrib-tesla",
   "_phantomChildren": {},
   "_requested": {
-    "type": "git",
-    "raw": "GaPhi/node-red-contrib-tesla",
-    "rawSpec": "GaPhi/node-red-contrib-tesla",
-    "saveSpec": "github:GaPhi/node-red-contrib-tesla",
-    "fetchSpec": null,
-    "gitCommittish": null
+    "type": "version",
+    "registry": true,
+    "raw": "@gaphi/node-red-contrib-tesla@1.0.6-5",
+    "name": "@gaphi/node-red-contrib-tesla",
+    "escapedName": "@gaphi%2fnode-red-contrib-tesla",
+    "scope": "@gaphi",
+    "rawSpec": "1.0.6-5",
+    "saveSpec": null,
+    "fetchSpec": "1.0.6-5"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "github:GaPhi/node-red-contrib-tesla#31a4ce0a2d68e8714259b4cb2719956aec0e1b02",
-  "_spec": "GaPhi/node-red-contrib-tesla",
-  "_where": "/data/node_modules",
-  "author": "Philippe Gresse-Lugue",
+  "_resolved": "https://registry.npmjs.org/@gaphi/node-red-contrib-tesla/-/node-red-contrib-tesla-1.0.6-5.tgz",
+  "_shasum": "3608838f1a386da22f6fe112a83d5bbcd2fcaee9",
+  "_spec": "@gaphi/node-red-contrib-tesla@1.0.6-5",
+  "_where": "/data",
+  "author": {
+    "name": "Philippe Gresse-Lugue"
+  },
   "bugs": {
     "url": "https://github.com/GaPhi/node-red-contrib-tesla/issues"
   },
+  "bundleDependencies": false,
   "dependencies": {
     "@gaphi/teslajs": ">=4.9.12-0"
   },
@@ -48,5 +56,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.0.6-4"
+  "version": "1.0.6-5"
 }
