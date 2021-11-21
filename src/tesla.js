@@ -88,6 +88,7 @@ module.exports = function (RED) {
             case 'navigationRequest': return tjs.navigationRequestAsync({authToken, vehicleID}, commandArgs.subject, commandArgs.text, commandArgs.locale);
             case 'nearbyChargers': return tjs.nearbyChargersAsync({authToken, vehicleID});
             case 'openChargePort': return tjs.openChargePortAsync({authToken, vehicleID});
+            case 'closeChargePort': return tjs.closeChargePortAsync({authToken, vehicleID});
             case 'openFrunk': return tjs.openTrunkAsync({authToken, vehicleID}, "frunk");
             case 'openTrunk': return tjs.openTrunkAsync({authToken, vehicleID}, "trunk");
             case 'remoteStart': return tjs.remoteStartAsync({authToken, vehicleID}, commandArgs.password);
@@ -110,7 +111,7 @@ module.exports = function (RED) {
             case 'stopCharge': return tjs.stopChargeAsync({authToken, vehicleID});
             case 'sunRoofControl': return tjs.sunRoofControlAsync({authToken, vehicleID}, commandArgs.state);
             case 'sunRoofMove': return tjs.sunRoofMoveAsync({authToken, vehicleID}, commandArgs.percent);
-            case 'windowControl': return tjs.windowControlAsync({authToken, vehicleID}, commandArgs.command);
+            case 'windowControl': return tjs.windowControlAsync({authToken, vehicleID}, commandArgs.command, commandArgs.lat, commandArgs.lon);
             case 'vinDecode': return tjs.vinDecode(await tjs.vehicleAsync({authToken, vehicleID}));
             case 'getModel': return tjs.getModel(await tjs.vehicleAsync({authToken, vehicleID}));
             case 'getPaintColor': return tjs.getPaintColor(await tjs.vehicleAsync({authToken, vehicleID}));
@@ -157,13 +158,13 @@ module.exports = function (RED) {
                     node.send.apply(node, arguments)
                 };
                 const {vehicleID} = node.teslaConfig;
-                const command = msg.command || config.command;
+                const command = msg.command ?? config.command;
 
                 // TODO: Remove manual token when auth flow is fixed in TeslaJs
                 const {email, password, manualToken} = node.teslaConfig.credentials;
                 const { commandArgs } = msg;
                 if (command === 'remoteStart') {
-                    commandArgs.password = password;
+                    commandArgs.password = commandArgs.password ?? password;
                 }
 
                 try {
