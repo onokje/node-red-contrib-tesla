@@ -76,7 +76,7 @@ module.exports = function (RED) {
             case 'climateStop': return tjs.climateStopAsync({authToken, vehicleID});
             case 'flashLights': return tjs.flashLightsAsync({authToken, vehicleID});
             case 'honkHorn': return tjs.honkHornAsync({authToken, vehicleID});
-            case 'maxDefrost': return tjs.maxDefrostAsync({authToken, vehicleID});
+            case 'maxDefrost': return tjs.maxDefrostAsync({authToken, vehicleID}, commandArgs.onoff);
             case 'mediaTogglePlayback': return tjs.mediaTogglePlaybackAsync({authToken, vehicleID});
             case 'mediaPlayNext': return tjs.mediaPlayNextAsync({authToken, vehicleID});
             case 'mediaPlayPrevious': return tjs.mediaPlayPreviousAsync({authToken, vehicleID});

@@ -1,6 +1,5 @@
 {
-  "_from": "@gaphi/node-red-contrib-tesla@1.0.6-5",
-  "_id": "@gaphi/node-red-contrib-tesla@1.0.6-5",
+  "_from": "@gaphi/node-red-contrib-tesla@1.0.6-6",
   "_inBundle": false,
   "_integrity": "sha512-+/wyoeXS38BqAWCbhmKjEdlklXxglXXxW9VcaZdsORbtaYuhOSJdX5GoDTHJEuBmml/ff4VEhFHKCfJH5TqlEg==",
   "_location": "/@gaphi/node-red-contrib-tesla",
@@ -8,21 +7,21 @@
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "@gaphi/node-red-contrib-tesla@1.0.6-5",
+    "raw": "@gaphi/node-red-contrib-tesla@1.0.6-6",
     "name": "@gaphi/node-red-contrib-tesla",
     "escapedName": "@gaphi%2fnode-red-contrib-tesla",
     "scope": "@gaphi",
-    "rawSpec": "1.0.6-5",
+    "rawSpec": "1.0.6-6",
     "saveSpec": null,
-    "fetchSpec": "1.0.6-5"
+    "fetchSpec": "1.0.6-6"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@gaphi/node-red-contrib-tesla/-/node-red-contrib-tesla-1.0.6-5.tgz",
+  "_resolved": "https://registry.npmjs.org/@gaphi/node-red-contrib-tesla/-/node-red-contrib-tesla-1.0.6-6.tgz",
   "_shasum": "3608838f1a386da22f6fe112a83d5bbcd2fcaee9",
-  "_spec": "@gaphi/node-red-contrib-tesla@1.0.6-5",
+  "_spec": "@gaphi/node-red-contrib-tesla@1.0.6-6",
   "_where": "/data",
   "author": {
     "name": "Philippe Gresse-Lugue"
@@ -30,9 +29,9 @@
   "bugs": {
     "url": "https://github.com/GaPhi/node-red-contrib-tesla/issues"
   },
-  "bundleDependencies": false,
+  "bundleDependencies": [],
   "dependencies": {
-    "@gaphi/teslajs": ">=4.9.12-0"
+    "@gaphi/teslajs": "^4.9.12-0"
   },
   "deprecated": false,
   "description": "Node red module to control Tesla vehicles and devices",
@@ -56,5 +55,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.0.6-5"
+  "version": "1.0.6-7"
 }
