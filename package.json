@@ -24,14 +24,19 @@
   "_spec": "@gaphi/node-red-contrib-tesla@1.0.6-6",
   "_where": "/data",
   "author": {
-    "name": "Philippe Gresse-Lugue"
+    "name": "Martin Schimmel"
   },
+  "contributors": [
+    {
+      "name": "Philippe Gresse-Lugue"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/GaPhi/node-red-contrib-tesla/issues"
   },
   "bundleDependencies": [],
   "dependencies": {
-    "@gaphi/teslajs": "^4.9.12-0"
+    "@gaphi/teslajs": "^4.9.12-2"
   },
   "deprecated": false,
   "description": "Node red module to control Tesla vehicles and devices",
@@ -55,5 +60,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.0.6-7"
+  "version": "1.0.6-9"
 }
