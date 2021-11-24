@@ -1,16 +1,14 @@
 <script type="text/javascript">
     RED.nodes.registerType('tesla-config', {
         category: 'config',
-        credentials: {
-            email: {type: "text"},
-            password: {type: "password"},
-            manualToken: {type: "password"}
-        },
         defaults: {
-            vehicleID: {value: '', required: false, validate: RED.validators.number()},
+            email: {value: "", required: true},
+        },
+        credentials: {
+            refresh_token: {type: "password"}
         },
         label: function () {
-            return this.vehicleID;
+            return this.email;
         }
     });
 </script>
@@ -21,46 +19,75 @@
         <input type="text" id="node-config-input-email">
     </div>
     <div class="form-row">
-        <label for="node-config-input-password"><i class="icon-bookmark"></i> Password</label>
-        <input type="password" id="node-config-input-password">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-manualToken"><i class="icon-bookmark"></i> Manual Access token</label>
-        <input type="password" id="node-config-input-manualToken">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-vehicleID"><i class="icon-bookmark"></i> VehicleId</label>
-        <input type="text" id="node-config-input-vehicleID">
+        <label for="node-config-input-refresh_token"><i class="icon-bookmark"></i> Refresh token</label>
+        <input type="password" id="node-config-input-refresh_token">
     </div>
 </script>
 
 <script type="text/javascript">
+    function refreshVehicleList(nodeId, selectedId) {
+        if (!nodeId) {
+            return;
+        }
+
+        $.getJSON('getvehicles/' + nodeId, function (data) {
+            $("#node-input-lookup-vehicles-icon").addClass('fa-search');
+            $("#node-input-lookup-vehicles-icon").removeClass('spinner');
+            $("#node-input-lookup-vehicles").removeClass('disabled');
+            let vehicles = data || [];
+            $('#node-input-vehicleID').empty();
+            $.each(vehicles, function (i, item) {
+                $('#node-input-vehicleID').append($('<option>', {
+                    value: item.id,
+                    text: item.name,
+                    selected: selectedId === item.id
+                }));
+            });
+        });
+    }
+
     RED.nodes.registerType('tesla-api', {
         category: 'function',
-        color: '#ff5d62',
+        color: '#ff4b50',
         defaults: {
             teslaConfig: {value: "", type: "tesla-config"},
             command: {value: "", required: false},
-            name: {value: ""}
+            name: {value: ""},
+            vehicleID: {value: "", required: false},
+            autoWakeUp: {value: true, required: false},
         },
         inputs: 1,
         outputs: 1,
         icon: "tesla.png",
         label: function () {
-            return this.name || "tesla api";
+            return this.name || "Tesla API";
+        },
+        oneditprepare: function () {
+            var node = this;
+
+            refreshVehicleList(node.id, node.vehicleID);
+
+            $("#node-input-lookup-vehicles").click(function () {
+
+                $("#node-input-lookup-vehicles-icon").removeClass('fa-search');
+                $("#node-input-lookup-vehicles-icon").addClass('spinner');
+                $("#node-input-lookup-vehicles").addClass('disabled');
+                refreshVehicleList(node.id, node.vehicleID);
+            });
         }
     });
 </script>
 
 <script type="text/html" data-template-name="tesla-api">
     <div class="form-row">
-        <label for="node-input-teslaConfig"><i class="icon-tag"></i> Tesla device</label>
-        <input type="text" id="node-input-teslaConfig" placeholder="Select tesla device">
+        <label for="node-input-teslaConfig" style="white-space: nowrap; width: 125px">
+            <i class="icon-tag"></i> Tesla account
+        </label>
+        <input type="text" id="node-input-teslaConfig" placeholder="Select tesla account">
     </div>
-    <p>You can also send msg.command to set the command. If msg.command is set, it will overwrite any choice set below.</p>
     <div class="form-row">
-        <label for="node-input-command"><i class="icon-tag"></i> Command</label>
-        <select id="node-input-command">
+        <label for="node-input-command" style="white-space: nowrap; width: 125px"><i class="icon-tag"></i> Command</label>
+        <select id="node-input-command" style="width: 70%">
             <option value="vehicles">vehicles - A list of all vehicles available in your account</option>
             <option value="vehicle">vehicle - retrieve general vehicle information</option>
             <option value="vehicleData">vehicleData - retrieve all vehicle state data in a single call</option>
@@ -119,8 +146,32 @@
             <option value="getPaintColor">getPaintColor</option>
         </select>
     </div>
+    <div class="form-tips"><b>Tip:</b> You can also send msg.command to set the command. If msg.command is set, it will overwrite any choice set
+        below.</div>
+
+    <div class="form-row" style="margin-top: 20px;">
+        <label for="node-input-vehicleID" style="white-space: nowrap; width: 125px">Vehicle or Device</label>
+        <div style="display: inline-block; position: relative; width: 70%; height: 20px;">
+            <div style="position: absolute; left: 0; right: 40px;">
+                <select id="node-input-vehicleID" style="width: 100%"></select>
+            </div>
+            <a id="node-input-lookup-vehicles" class="red-ui-button" style="position: absolute; right: 0; top: 0;">
+                <i id="node-input-lookup-vehicles-icon" class="fa fa-search"></i>
+            </a>
+        </div>
+
+    </div>
+    <div class="form-tips">
+        <p>This node must be deployed first before you can get a list of vehicles.</p>
+    </div>
+    <div style="margin-top: 20px;">
+        <label for="node-input-autoWakeUp">
+            <input type="checkbox" id="node-input-autoWakeUp" style="position: relative; top: -4px; margin-right: 5px;"/>&nbsp;
+            <span>Wakeup car automatically</span>
+        </label>
+    </div>
     <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <label for="node-input-name" style="white-space: nowrap; width: 125px"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 
@@ -129,75 +180,311 @@
 <script type="text/html" data-help-name="tesla-api">
     <p>A node that can retrieve data and send commands to the tesla api.</p>
     <h2>Input:</h2>
-    <p>The msg.command property can be set to override which command to send. See below for a list of valid commands.</p>
-    <p>Some commands need additional data. Example: The setChargeLimit command requires the amt argument (an integer representing the target charge percentage). If this is the case, wrap the arguments in a commandArgs object and set that to the msg object. In the above example, set mgs.commandArgs.amt to a number between 50 and 100.</p>
+    <p>The msg.command property can be set to override which command to send. See below for a list of valid
+        commands.</p>
+    <p>Some commands need additional data. Example: The setChargeLimit command requires the amt argument (an integer
+        representing the target charge percentage). If this is the case, wrap the arguments in a commandArgs object and
+        set that to the msg object. In the above example, set mgs.commandArgs.amt to a number between 50 and 100.</p>
     <h2>Output</h2>
-    <p>The msg.payload property will be set to the command output. The structure varies per command. Any other msg properties will be left intact.</p>
+    <p>The msg.payload property will be set to the command output. The structure varies per command. Any other msg
+        properties will be left intact.</p>
     <h2>Command list</h2>
-    <p>Look for more information about the commands on <a target="_blank" href="https://github.com/mseminatore/TeslaJS/blob/master/docs/DOCS.md#functions">this page</a>.</p>
+    <p>Look for more information about the commands on
+        <a target="_blank" href="https://github.com/mseminatore/TeslaJS/blob/master/docs/DOCS.md#functions">
+            this page
+        </a>.
+    </p>
     <table>
         <thead>
         <tr>
-            <th>Command name</th><th>Description</th><th>arguments</th>
+            <th>Command name</th>
+            <th>Description</th>
+            <th>arguments</th>
         </tr>
         </thead>
         <tbody>
-            <tr><td>vehicles</td><td>A list of all vehicles available in your account</td><td></td></tr>
-            <tr><td>vehicle</td><td>retrieve general vehicle information</td><td></td></tr>
-            <tr><td>vehicleData</td><td>retrieve all vehicle state data in a single call</td><td></td></tr>
-            <tr><td>chargeState</td><td>retrieve the charge_state data</td><td></td></tr>
-            <tr><td>climateState</td><td>retrieve the climate_state data</td><td></td></tr>
-            <tr><td>vehicleConfig</td><td>retrieve the vehicle_config data</td><td></td></tr>
-            <tr><td>vehicleState</td><td>retrieve the vehicle_state data</td><td></td></tr>
-            <tr><td>driveState</td><td>retrieve the drive_state data</td><td></td></tr>
-            <tr><td>guiSettings</td><td>guiSettings</td><td></td></tr>
-            <tr><td>wakeUp</td><td>wakeUp</td><td></td></tr>
-            <tr><td>chargeStandard</td><td>chargeStandard</td><td></td></tr>
-            <tr><td>chargeMaxRange</td><td>chargeMaxRange</td><td></td></tr>
-            <tr><td>doorLock</td><td>doorLock</td><td></td></tr>
-            <tr><td>doorUnlock</td><td>doorUnlock</td><td></td></tr>
-            <tr><td>climateStart</td><td>climateStart</td><td></td></tr>
-            <tr><td>climateStop</td><td>climateStop</td><td></td></tr>
-            <tr><td>flashLights</td><td>flashLights</td><td></td></tr>
-            <tr><td>honkHorn</td><td>honkHorn</td><td></td></tr>
-            <tr><td>maxDefrost</td><td>maxDefrost</td><td></td></tr>
-            <tr><td>mediaTogglePlayback</td><td>mediaTogglePlayback</td><td></td></tr>
-            <tr><td>mediaPlayNext</td><td>mediaPlayNext</td><td></td></tr>
-            <tr><td>mediaPlayPrevious</td><td>mediaPlayPrevious</td><td></td></tr>
-            <tr><td>mediaPlayNextFavorite</td><td>mediaPlayNextFavorite</td><td></td></tr>
-            <tr><td>mediaPlayPreviousFavorite</td><td>mediaPlayPreviousFavorite</td><td></td></tr>
-            <tr><td>mediaVolumeUp</td><td>mediaVolumeUp</td><td></td></tr>
-            <tr><td>mediaVolumeDown</td><td>mediaVolumeDown</td><td></td></tr>
-            <tr><td>mobileEnabled</td><td>mobileEnabled</td><td></td></tr>
-            <tr><td>navigationRequest</td><td>navigationRequest</td><td>subject, text, locale</td></tr>
-            <tr><td>nearbyChargers</td><td>nearbyChargers</td><td></td></tr>
-            <tr><td>openChargePort</td><td>openChargePort</td><td></td></tr>
-            <tr><td>openFrunk</td><td>openFrunk</td><td></td></tr>
-            <tr><td>openTrunk</td><td>openTrunk</td><td></td></tr>
-            <tr><td>remoteStart</td><td>remoteStart</td><td></td></tr>
-            <tr><td>resetValetPin</td><td>resetValetPin</td><td></td></tr>
-            <tr><td>scheduleSoftwareUpdate</td><td>scheduleSoftwareUpdate</td><td>offset</td></tr>
-            <tr><td>seatHeater</td><td>seatHeater</td><td>heater, level</td></tr>
-            <tr><td>setChargeLimit</td><td>setChargeLimit</td><td>amt</td></tr>
-            <tr><td>setChargingAmps</td><td>setChargingAmps</td><td>amps</td></tr>
-            <tr><td>setScheduledCharging</td><td>setScheduledCharging</td><td>enable, time</td></tr>
-            <tr><td>setScheduledDeparture</td><td>setScheduledDeparture</td><td>enable, departure_time, preconditioning_enabled, preconditioning_weekdays_only, off_peak_charging_enabled, off_peak_charging_weekdays_only, end_off_peak_time</td></tr>
-            <tr><td>setSentryMode</td><td>setSentryMode</td><td>onoff</td></tr>
-            <tr><td>setTemps</td><td>setTemps</td><td>driver, pass</td></tr>
-            <tr><td>setValetMode</td><td>setValetMode</td><td>onoff, pin</td></tr>
-            <tr><td>speedLimitActivate</td><td>speedLimitActivate</td><td>pin</td></tr>
-            <tr><td>speedLimitDeactivate</td><td>speedLimitDeactivate</td><td>pin</td></tr>
-            <tr><td>speedLimitClearPin</td><td>speedLimitClearPin</td><td>pin</td></tr>
-            <tr><td>speedLimitSetLimit</td><td>speedLimitSetLimit</td><td>limit</td></tr>
-            <tr><td>startCharge</td><td>startCharge</td><td></td></tr>
-            <tr><td>steeringHeater</td><td>steeringHeater</td><td>level</td></tr>
-            <tr><td>stopCharge</td><td>stopCharge</td><td></td></tr>
-            <tr><td>sunRoofControl</td><td>sunRoofControl</td><td>state</td></tr>
-            <tr><td>sunRoofMove</td><td>sunRoofMove</td><td>percent</td></tr>
-            <tr><td>windowControl</td><td>windowControl</td><td>command</td></tr>
-            <tr><td>vinDecode</td><td>vinDecode</td><td></td></tr>
-            <tr><td>getModel</td><td>getModel</td><td></td></tr>
-            <tr><td>getPaintColor</td><td>getPaintColor</td><td></td></tr>
+        <tr>
+            <td>vehicles</td>
+            <td>A list of all vehicles available in your account</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>vehicle</td>
+            <td>retrieve general vehicle information</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>vehicleData</td>
+            <td>retrieve all vehicle state data in a single call</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>chargeState</td>
+            <td>retrieve the charge_state data</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>climateState</td>
+            <td>retrieve the climate_state data</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>vehicleConfig</td>
+            <td>retrieve the vehicle_config data</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>vehicleState</td>
+            <td>retrieve the vehicle_state data</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>driveState</td>
+            <td>retrieve the drive_state data</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>guiSettings</td>
+            <td>guiSettings</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>wakeUp</td>
+            <td>wakeUp</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>chargeStandard</td>
+            <td>chargeStandard</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>chargeMaxRange</td>
+            <td>chargeMaxRange</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>doorLock</td>
+            <td>doorLock</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>doorUnlock</td>
+            <td>doorUnlock</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>climateStart</td>
+            <td>climateStart</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>climateStop</td>
+            <td>climateStop</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>flashLights</td>
+            <td>flashLights</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>honkHorn</td>
+            <td>honkHorn</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>maxDefrost</td>
+            <td>maxDefrost</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>mediaTogglePlayback</td>
+            <td>mediaTogglePlayback</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>mediaPlayNext</td>
+            <td>mediaPlayNext</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>mediaPlayPrevious</td>
+            <td>mediaPlayPrevious</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>mediaPlayNextFavorite</td>
+            <td>mediaPlayNextFavorite</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>mediaPlayPreviousFavorite</td>
+            <td>mediaPlayPreviousFavorite</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>mediaVolumeUp</td>
+            <td>mediaVolumeUp</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>mediaVolumeDown</td>
+            <td>mediaVolumeDown</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>mobileEnabled</td>
+            <td>mobileEnabled</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>navigationRequest</td>
+            <td>navigationRequest</td>
+            <td>subject, text, locale</td>
+        </tr>
+        <tr>
+            <td>nearbyChargers</td>
+            <td>nearbyChargers</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>openChargePort</td>
+            <td>openChargePort</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>openFrunk</td>
+            <td>openFrunk</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>openTrunk</td>
+            <td>openTrunk</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>remoteStart</td>
+            <td>remoteStart</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>resetValetPin</td>
+            <td>resetValetPin</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>scheduleSoftwareUpdate</td>
+            <td>scheduleSoftwareUpdate</td>
+            <td>offset</td>
+        </tr>
+        <tr>
+            <td>seatHeater</td>
+            <td>seatHeater</td>
+            <td>heater, level</td>
+        </tr>
+        <tr>
+            <td>setChargeLimit</td>
+            <td>setChargeLimit</td>
+            <td>amt</td>
+        </tr>
+        <tr>
+            <td>setChargingAmps</td>
+            <td>setChargingAmps</td>
+            <td>amps</td>
+        </tr>
+        <tr>
+            <td>setScheduledCharging</td>
+            <td>setScheduledCharging</td>
+            <td>enable, time</td>
+        </tr>
+        <tr>
+            <td>setScheduledDeparture</td>
+            <td>setScheduledDeparture</td>
+            <td>enable, departure_time, preconditioning_enabled, preconditioning_weekdays_only,
+                off_peak_charging_enabled, off_peak_charging_weekdays_only, end_off_peak_time
+            </td>
+        </tr>
+        <tr>
+            <td>setSentryMode</td>
+            <td>setSentryMode</td>
+            <td>onoff</td>
+        </tr>
+        <tr>
+            <td>setTemps</td>
+            <td>setTemps</td>
+            <td>driver, pass</td>
+        </tr>
+        <tr>
+            <td>setValetMode</td>
+            <td>setValetMode</td>
+            <td>onoff, pin</td>
+        </tr>
+        <tr>
+            <td>speedLimitActivate</td>
+            <td>speedLimitActivate</td>
+            <td>pin</td>
+        </tr>
+        <tr>
+            <td>speedLimitDeactivate</td>
+            <td>speedLimitDeactivate</td>
+            <td>pin</td>
+        </tr>
+        <tr>
+            <td>speedLimitClearPin</td>
+            <td>speedLimitClearPin</td>
+            <td>pin</td>
+        </tr>
+        <tr>
+            <td>speedLimitSetLimit</td>
+            <td>speedLimitSetLimit</td>
+            <td>limit</td>
+        </tr>
+        <tr>
+            <td>startCharge</td>
+            <td>startCharge</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>steeringHeater</td>
+            <td>steeringHeater</td>
+            <td>level</td>
+        </tr>
+        <tr>
+            <td>stopCharge</td>
+            <td>stopCharge</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>sunRoofControl</td>
+            <td>sunRoofControl</td>
+            <td>state</td>
+        </tr>
+        <tr>
+            <td>sunRoofMove</td>
+            <td>sunRoofMove</td>
+            <td>percent</td>
+        </tr>
+        <tr>
+            <td>windowControl</td>
+            <td>windowControl</td>
+            <td>command</td>
+        </tr>
+        <tr>
+            <td>vinDecode</td>
+            <td>vinDecode</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>getModel</td>
+            <td>getModel</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>getPaintColor</td>
+            <td>getPaintColor</td>
+            <td></td>
+        </tr>
         </tbody>
     </table>
 </script>
