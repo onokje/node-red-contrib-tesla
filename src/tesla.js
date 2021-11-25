@@ -3,6 +3,7 @@ const tjs = require('teslajs');
 
 module.exports = function (RED) {
 
+    const STATE_ASLEEP = 'asleep';
     let localUserCache = {};
 
     const isTokenExpired = (tokenObj) => tokenObj.created_at + tokenObj.expires_in < Math.round(new Date() / 1000);
@@ -49,12 +50,23 @@ module.exports = function (RED) {
         }
     };
 
-    const wakeUp = async (authToken, vehicleID) => {
-        const vehicleData = await tjs.vehicleAsync({authToken, vehicleID});
-        if (vehicleData.state && vehicleData.state === "asleep") {
+    const wakeUp = async (authToken, vehicleID, retry = 0) => {
+        let state;
+        if (!retry) {
+            const vehicleData = await tjs.vehicleAsync({authToken, vehicleID});
+            state = vehicleData.state;
+        }
+        if (retry > 0 || state === STATE_ASLEEP) {
+            console.debug('Tesla API: trying to wakeup the car. retry: ' + retry);
             const response = await tjs.wakeUpAsync({authToken, vehicleID});
-            console.log(response);
-            await new Promise((resolve => setTimeout(() => resolve(), 2000)));
+            if (response.state === STATE_ASLEEP) {
+                await new Promise((resolve => setTimeout(() => resolve(), 5000)));
+                retry++;
+                if (retry < 5) {
+                    console.debug('Tesla API: Wakeup retry: ' + retry);
+                    await wakeUp(authToken, vehicleID, retry);
+                }
+            }
         }
     }
 
@@ -177,10 +189,8 @@ module.exports = function (RED) {
                 return tjs.windowControlAsync({authToken, vehicleID}, commandArgs.command);
             case 'vinDecode':
                 return tjs.vinDecode(await tjs.vehicleAsync({authToken, vehicleID}));
-            // TODO: Does not seem to be working anymore (404), need more intel
             case 'getModel':
                 return tjs.getModel(await tjs.vehicleAsync({authToken, vehicleID}));
-            // TODO: Does not seem to be working anymore (404), need more intel
             case 'getPaintColor':
                 return tjs.getPaintColor(await tjs.vehicleAsync({authToken, vehicleID}));
 
@@ -208,33 +218,37 @@ module.exports = function (RED) {
 
     function TeslaApiNode(config) {
         RED.nodes.createNode(this, config);
+        const node = this;
 
         this.teslaConfig = RED.nodes.getNode(config.teslaConfig);
         if (this.teslaConfig) {
-            const node = this;
+            node.status({fill: "blue", shape: "ring", text: "Idle"});
             node.on('input', async (msg, send, done) => {
 
                 send = send || function () {
                     node.send.apply(node, arguments)
                 };
-                const vehicleID = msg.topic || config.vehicleID;
+                const vehicleID = msg.vehicleID || config.vehicleID;
                 const command = msg.command || config.command;
-                const autoWakeup = msg.autoWakeup || config.autoWakeup || false;
+                const autoWakeUp = msg.autoWakeUp || config.autoWakeUp || false;
                 const email = config.email;
 
                 const {refresh_token} = node.teslaConfig.credentials;
                 const {commandArgs} = msg;
 
                 try {
+                    node.status({fill: "blue", shape: "dot", text: "Working"});
                     const authToken = await getAccessToken(email, refresh_token);
                     if (command === 'vehicles') {
                         msg.payload = await tjs.vehiclesAsync({authToken});
                     } else {
-                        msg.payload = await doCommandAndAutoWake(command, authToken, vehicleID, autoWakeup, commandArgs);
+                        msg.payload = await doCommandAndAutoWake(command, authToken, vehicleID, autoWakeUp, commandArgs);
                     }
 
                     send(msg);
+                    node.status({fill: "green", shape: "ring", text: "Idle"});
                 } catch (err) {
+                    node.status({fill: "red", shape: "dot", text: String(err).substring(0, 25)});
                     if (done) {
                         // Node-RED 1.0 compatible
                         done(err);
@@ -246,6 +260,7 @@ module.exports = function (RED) {
             });
         } else {
             node.warn('Tesla API: No tesla config defined');
+            node.status({fill: "red", shape: "ring", text: "Invalid config"});
         }
 
     }
