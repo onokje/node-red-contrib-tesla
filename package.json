@@ -5,15 +5,15 @@
   "bugs": {
     "url": "https://github.com/GaPhi/node-red-contrib-tesla/issues"
   },
-  "bundleDependencies": [],
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Philippe Gresse-Lugue"
     }
   ],
   "dependencies": {
-    "axios": "^0.24.0",
-    "@gaphi/teslajs": "^4.9.12-2"
+    "@gaphi/teslajs": "^4.9.12-2",
+    "axios": "^0.24.0"
   },
   "deprecated": false,
   "description": "Node red module to control Tesla vehicles and devices",
@@ -37,5 +37,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "2.0.1-0",
+  "version": "2.0.1-1"
 }

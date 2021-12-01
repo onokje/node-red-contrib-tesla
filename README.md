@@ -5,7 +5,7 @@ Node red nodes for controlling and communicating with Tesla devices, like the Mo
 ## How to install:
 Run `npm install @gaphi/node-red-contrib-tesla --save` or just install it from the Node-red dashboard (manage palette).
 
-## 2.0 updates:
+## 2.0.0 updates:
 I made a lot of changes in this update:
 - new auth flow (email and refresh token). The teslaJS library is no longer used to fetch the token, but it is still used for all other commands. Therefor, the newer commands (like setting the charging amps) are not supported just yet. Just be patient a bit longer, i will add them in time.
 - Autowakeup is now a setting (it was always enabled, now you can choose). It's also overwritable by setting `msg.autoWakeUp`.
