@@ -1,41 +1,18 @@
 {
-  "_from": "@gaphi/node-red-contrib-tesla@1.0.6-6",
-  "_inBundle": false,
-  "_integrity": "sha512-+/wyoeXS38BqAWCbhmKjEdlklXxglXXxW9VcaZdsORbtaYuhOSJdX5GoDTHJEuBmml/ff4VEhFHKCfJH5TqlEg==",
-  "_location": "/@gaphi/node-red-contrib-tesla",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "@gaphi/node-red-contrib-tesla@1.0.6-6",
-    "name": "@gaphi/node-red-contrib-tesla",
-    "escapedName": "@gaphi%2fnode-red-contrib-tesla",
-    "scope": "@gaphi",
-    "rawSpec": "1.0.6-6",
-    "saveSpec": null,
-    "fetchSpec": "1.0.6-6"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/@gaphi/node-red-contrib-tesla/-/node-red-contrib-tesla-1.0.6-6.tgz",
-  "_shasum": "3608838f1a386da22f6fe112a83d5bbcd2fcaee9",
-  "_spec": "@gaphi/node-red-contrib-tesla@1.0.6-6",
-  "_where": "/data",
   "author": {
     "name": "Martin Schimmel"
   },
+  "bugs": {
+    "url": "https://github.com/GaPhi/node-red-contrib-tesla/issues"
+  },
+  "bundleDependencies": [],
   "contributors": [
     {
       "name": "Philippe Gresse-Lugue"
     }
   ],
-  "bugs": {
-    "url": "https://github.com/GaPhi/node-red-contrib-tesla/issues"
-  },
-  "bundleDependencies": [],
   "dependencies": {
+    "axios": "^0.24.0",
     "@gaphi/teslajs": "^4.9.12-2"
   },
   "deprecated": false,
@@ -60,5 +37,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.0.6-9"
+  "version": "2.0.1-0",
 }
