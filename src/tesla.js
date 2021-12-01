@@ -186,7 +186,7 @@ module.exports = function (RED) {
             case 'sunRoofMove':
                 return tjs.sunRoofMoveAsync({authToken, vehicleID}, commandArgs.percent);
             case 'windowControl':
-                return tjs.windowControlAsync({authToken, vehicleID}, commandArgs.command);
+                return tjs.windowControlAsync({authToken, vehicleID}, commandArgs.command, commandArgs.lat, commandArgs.lon);
             case 'vinDecode':
                 return tjs.vinDecode(await tjs.vehicleAsync({authToken, vehicleID}));
             case 'getModel':
