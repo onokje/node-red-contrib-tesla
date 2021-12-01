@@ -39,7 +39,7 @@
             $("#node-input-lookup-vehicles-icon").addClass('fa-search');
             $("#node-input-lookup-vehicles-icon").removeClass('spinner');
             $("#node-input-lookup-vehicles").removeClass('disabled');
-            let vehicles = data || [];
+            let vehicles = data ?? [];
             $('#node-input-vehicleID').empty();
             $.each(vehicles, function (i, item) {
                 $('#node-input-vehicleID').append($('<option>', {
@@ -65,7 +65,7 @@
         outputs: 1,
         icon: "tesla.png",
         label: function () {
-            return this.name || "Tesla API";
+            return this.name ?? "Tesla API";
         },
         oneditprepare: function () {
             var node = this;
