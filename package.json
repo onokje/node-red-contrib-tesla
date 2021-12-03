@@ -5,7 +5,7 @@
   "bugs": {
     "url": "https://github.com/GaPhi/node-red-contrib-tesla/issues"
   },
-  "bundleDependencies": false,
+  "bundleDependencies": [],
   "contributors": [
     {
       "name": "Philippe Gresse-Lugue"
