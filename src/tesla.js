@@ -143,7 +143,7 @@ module.exports = function (RED) {
             case 'openTrunk':
                 return tjs.openTrunkAsync({authToken, vehicleID}, "trunk");
             case 'remoteStart':
-                return tjs.remoteStartAsync({authToken, vehicleID}, commandArgs.password);
+                return tjs.remoteStartAsync({authToken, vehicleID});
             case 'resetValetPin':
                 return tjs.resetValetPinAsync({authToken, vehicleID});
             case 'scheduleSoftwareUpdate':
