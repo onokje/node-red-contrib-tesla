@@ -139,9 +139,9 @@ module.exports = function (RED) {
             case 'openChargePort':
                 return tjs.openChargePortAsync({authToken, vehicleID});
             case 'openFrunk':
-                return tjs.openTrunkAsync({authToken, vehicleID}, "frunk");
+                return tjs.openTrunkAsync({authToken, vehicleID}, "front");
             case 'openTrunk':
-                return tjs.openTrunkAsync({authToken, vehicleID}, "trunk");
+                return tjs.openTrunkAsync({authToken, vehicleID}, "rear");
             case 'remoteStart':
                 return tjs.remoteStartAsync({authToken, vehicleID}, commandArgs.password);
             case 'resetValetPin':
