@@ -225,12 +225,12 @@ module.exports = function (RED) {
             node.status({fill: "blue", shape: "ring", text: "Idle"});
             node.on('input', async (msg, send, done) => {
 
-                send = send || function () {
+                send = send ?? function () {
                     node.send.apply(node, arguments)
                 };
-                const vehicleID = msg.vehicleID || config.vehicleID;
-                const command = msg.command || config.command;
-                const autoWakeUp = msg.autoWakeUp || config.autoWakeUp || false;
+                const vehicleID = msg.vehicleID ?? config.vehicleID;
+                const command = msg.command ?? config.command;
+                const autoWakeUp = msg.autoWakeUp ?? config.autoWakeUp ?? false;
                 const email = config.email;
 
                 const {refresh_token} = node.teslaConfig.credentials;
