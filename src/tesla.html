@@ -41,6 +41,10 @@
             $("#node-input-lookup-vehicles").removeClass('disabled');
             let vehicles = data || [];
             $('#node-input-vehicleID').empty();
+            $('#node-input-vehicleID').append($('<option>', {
+                value: "",
+                text: "<msg.vehicleID>"
+            }));
             $.each(vehicles, function (i, item) {
                 $('#node-input-vehicleID').append($('<option>', {
                     value: item.id,
@@ -93,6 +97,7 @@
     <div class="form-row">
         <label for="node-input-command" style="white-space: nowrap; width: 125px"><i class="icon-tag"></i> Command</label>
         <select id="node-input-command" style="width: 70%">
+            <option value="">&lt;msg.command&gt;</option>
             <option value="vehicles">vehicles - A list of all vehicles available in your account</option>
             <option value="vehicle">vehicle - retrieve general vehicle information</option>
             <option value="vehicleData">vehicleData - retrieve all vehicle state data in a single call</option>
@@ -152,7 +157,7 @@
         </select>
     </div>
     <div class="form-tips"><b>Tip:</b> You can also send msg.command to set the command. If msg.command is set, it will overwrite any choice set
-        below.</div>
+        above.</div>
 
     <div class="form-row" style="margin-top: 20px;">
         <label for="node-input-vehicleID" style="white-space: nowrap; width: 125px">Vehicle or Device</label>
@@ -167,7 +172,11 @@
 
     </div>
     <div class="form-tips">
-        <p>This node must be deployed first before you can get a list of vehicles.</p>
+        <p>This node must be deployed first before you can get a list of vehicles.
+        <br/>The vehicleID cannot be selected in a subflow, you have to set msg.vehicleID then (use 'vehicles' command which does not require this
+            data to get the list of valid vehicleID for this account).</p>
+        <b>Tip:</b> You can also send msg.vehicleID to set the vehicleID. If msg.vehicleID is set, it will overwrite any choice set
+        above.
     </div>
     <div style="margin-top: 20px;">
         <label for="node-input-autoWakeUp">
