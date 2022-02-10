@@ -53,7 +53,7 @@ module.exports = function (RED) {
     const wakeUp = async (authToken, vehicleID, retry = 0) => {
         let state;
         if (!retry) {
-            const vehicleData = await tjs.vehicleAsync({authToken, vehicleID});
+            const vehicleData = await tjs.vehicleAsync({authToken, vehicleID}, null, false);
             state = vehicleData.state;
         }
         if (retry > 0 || state === STATE_ASLEEP) {
@@ -80,7 +80,10 @@ module.exports = function (RED) {
             case 'vehicle':
                 return tjs.vehicleAsync({authToken, vehicleID});
             case 'vehicleData':
-                return tjs.vehicleDataAsync({authToken, vehicleID});
+                return tjs.vehicleDataAsync({
+                    authToken,
+                    vehicleID
+                }, commandArgs.endpoints, commandArgs.let_sleep);
             case 'chargeState':
                 return tjs.chargeStateAsync({authToken, vehicleID});
             case 'climateState':
