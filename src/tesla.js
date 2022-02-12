@@ -77,6 +77,17 @@ module.exports = function (RED) {
         }
 
         switch (command) {
+            // Low level access
+            case 'get':
+                return tjs.getAsync({authToken, vehicleID}, commandArgs?.service, commandArgs?.qs);
+            case 'post':
+                return tjs.postAsync({authToken, vehicleID}, commandArgs?.service, commandArgs?.qs, commandArgs?.body);
+            case 'vehicleGet':
+                return tjs.get_commandAsync({authToken, vehicleID}, commandArgs?.command, commandArgs?.qs);
+            case 'vehiclePost':
+                return tjs.post_commandAsync({authToken, vehicleID}, commandArgs?.command, commandArgs?.qs, commandArgs?.body);
+
+            // High level commands
             case 'vehicle':
                 return tjs.vehicleAsync({authToken, vehicleID}, commandArgs);
             case 'vehicleData':
