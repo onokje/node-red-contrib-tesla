@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
-    "teslajs": "^4.9.11"
+    "teslajs": "^4.10.0"
   },
   "repository": "https://github.com/onokje/node-red-contrib-tesla"
 }
