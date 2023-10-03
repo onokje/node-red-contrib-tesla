@@ -138,6 +138,8 @@ module.exports = function (RED) {
                 return tjs.nearbyChargersAsync({authToken, vehicleID});
             case 'openChargePort':
                 return tjs.openChargePortAsync({authToken, vehicleID});
+            case 'closeChargePort':
+                return tjs.closeChargePortAsync({authToken, vehicleID});
             case 'openFrunk':
                 return tjs.openTrunkAsync({authToken, vehicleID}, "front");
             case 'openTrunk':
