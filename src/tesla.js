@@ -178,7 +178,7 @@ module.exports = function (RED) {
             case 'startCharge':
                 return tjs.startChargeAsync({authToken, vehicleID});
             case 'steeringHeater':
-                return tjs.steeringHeaterAsync({authToken, vehicleID}, commandArgs.level);
+                return tjs.steeringHeaterAsync({authToken, vehicleID}, commandArgs.on);
             case 'stopCharge':
                 return tjs.stopChargeAsync({authToken, vehicleID});
             case 'sunRoofControl':
