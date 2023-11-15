@@ -91,10 +91,7 @@ module.exports = function (RED) {
             case 'vehicle':
                 return tjs.vehicleAsync({authToken, vehicleID}, commandArgs);
             case 'vehicleData':
-                return tjs.vehicleDataAsync({
-                    authToken,
-                    vehicleID
-                }, commandArgs);
+                return tjs.vehicleDataAsync({authToken, vehicleID}, commandArgs);
             case 'chargeState':
                 return tjs.chargeStateAsync({authToken, vehicleID}, commandArgs);
             case 'climateState':
@@ -144,14 +141,13 @@ module.exports = function (RED) {
             case 'mobileEnabled':
                 return tjs.mobileEnabledAsync({authToken, vehicleID}, commandArgs);
             case 'navigationRequest':
-                return tjs.navigationRequestAsync({
-                    authToken,
-                    vehicleID
-                }, commandArgs);
+                return tjs.navigationRequestAsync({authToken, vehicleID}, commandArgs);
             case 'nearbyChargers':
                 return tjs.nearbyChargersAsync({authToken, vehicleID}, commandArgs);
             case 'openChargePort':
                 return tjs.openChargePortAsync({authToken, vehicleID}, commandArgs);
+            case 'closeChargePort':
+                return tjs.closeChargePortAsync({authToken, vehicleID}, commandArgs);
             case 'openFrunk':
                 return tjs.openTrunkAsync({authToken, vehicleID}, { which: "front" });
             case 'openTrunk':
@@ -171,10 +167,7 @@ module.exports = function (RED) {
             case 'setScheduledCharging':
                 return tjs.setScheduledChargingAsync({authToken, vehicleID}, commandArgs);
             case 'setScheduledDeparture':
-                return tjs.setScheduledDepartureAsync({
-                    authToken,
-                    vehicleID
-                }, commandArgs);
+                return tjs.setScheduledDepartureAsync({authToken, vehicleID}, commandArgs);
             case 'setSentryMode':
                 return tjs.setSentryModeAsync({authToken, vehicleID}, commandArgs);
             case 'setTemps':
