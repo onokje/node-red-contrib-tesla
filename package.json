@@ -1,6 +1,11 @@
 {
+  "_args": [
+    [
+      "@gaphi/node-red-contrib-tesla@2.0.1-7",
+      "/data"
+    ]
+  ],
   "_from": "@gaphi/node-red-contrib-tesla",
-  "_id": "@gaphi/node-red-contrib-tesla@2.0.1-3",
   "_inBundle": false,
   "_integrity": "sha512-ka5lJG7vt6nEWWUKdAQxEce+cnjb58aqrmS/dSP0HRmqheJz4Ii1MpKuHxWwojg+i6fcBorqZl/ngQXt9UGbNQ==",
   "_location": "/@gaphi/node-red-contrib-tesla",
@@ -20,7 +25,7 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@gaphi/node-red-contrib-tesla/-/node-red-contrib-tesla-2.0.1-3.tgz",
+  "_resolved": "https://registry.npmjs.org/@gaphi/node-red-contrib-tesla/-/node-red-contrib-tesla-2.0.1-7.tgz",
   "_shasum": "27d02648124b1680a394e48dce7ccbae1328a42f",
   "_spec": "@gaphi/node-red-contrib-tesla",
   "_where": "/data",
@@ -62,5 +67,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "2.0.1-7"
+  "version": "2.0.1-8"
 }
