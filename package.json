@@ -1,25 +1,71 @@
 {
-  "name": "node-red-contrib-tesla",
-  "version": "2.0.0",
+  "_args": [
+    [
+      "@gaphi/node-red-contrib-tesla@2.0.1-7",
+      "/data"
+    ]
+  ],
+  "_from": "@gaphi/node-red-contrib-tesla",
+  "_inBundle": false,
+  "_integrity": "sha512-ka5lJG7vt6nEWWUKdAQxEce+cnjb58aqrmS/dSP0HRmqheJz4Ii1MpKuHxWwojg+i6fcBorqZl/ngQXt9UGbNQ==",
+  "_location": "/@gaphi/node-red-contrib-tesla",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@gaphi/node-red-contrib-tesla",
+    "name": "@gaphi/node-red-contrib-tesla",
+    "escapedName": "@gaphi%2fnode-red-contrib-tesla",
+    "scope": "@gaphi",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@gaphi/node-red-contrib-tesla/-/node-red-contrib-tesla-2.0.1-7.tgz",
+  "_shasum": "27d02648124b1680a394e48dce7ccbae1328a42f",
+  "_spec": "@gaphi/node-red-contrib-tesla",
+  "_where": "/data",
+  "author": {
+    "name": "Martin Schimmel"
+  },
+  "bugs": {
+    "url": "https://github.com/GaPhi/node-red-contrib-tesla/issues"
+  },
+  "bundleDependencies": false,
+  "contributors": [
+    {
+      "name": "Philippe Gresse-Lugue"
+    }
+  ],
+  "dependencies": {
+    "@gaphi/teslajs": "^4.11.0-1",
+    "axios": "^1.6.2"
+  },
+  "deprecated": false,
   "description": "Node red module to control Tesla vehicles and devices",
+  "homepage": "https://github.com/GaPhi/node-red-contrib-tesla#readme",
   "keywords": [
     "node-red",
     "tesla"
   ],
-  "main": "src/tesla.js.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Martin Schimmel",
   "license": "MIT",
+  "main": "src/tesla.js.js",
+  "name": "@gaphi/node-red-contrib-tesla",
   "node-red": {
     "nodes": {
       "tesla": "src/tesla.js"
     }
   },
-  "dependencies": {
-    "axios": "^0.24.0",
-    "teslajs": "^4.10.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GaPhi/node-red-contrib-tesla.git"
   },
-  "repository": "https://github.com/onokje/node-red-contrib-tesla"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.0.1-10"
 }

@@ -98,6 +98,10 @@
         <label for="node-input-command" style="white-space: nowrap; width: 125px"><i class="icon-tag"></i> Command</label>
         <select id="node-input-command" style="width: 70%">
             <option value="">&lt;msg.command&gt;</option>
+            <option value="get">get - Low level GET request</option>
+            <option value="post">post - Low level POST request</option>
+            <option value="vehicleGet">vehicleGet - Low level vehicle GET request</option>
+            <option value="vehiclePost">vehiclePost - Low level vehicle POST request</option>
             <option value="vehicles">vehicles - A list of all vehicles available in your account</option>
             <option value="vehicle">vehicle - retrieve general vehicle information</option>
             <option value="vehicleData">vehicleData - retrieve all vehicle state data in a single call</option>
@@ -219,6 +223,26 @@
         </thead>
         <tbody>
         <tr>
+            <td>get</td>
+            <td>Low level GET request</td>
+            <td>service, qs</td>
+        </tr>
+        <tr>
+            <td>post</td>
+            <td>Low level POST request</td>
+            <td>service, qs, body</td>
+        </tr>
+        <tr>
+            <td>vehicleGet</td>
+            <td>Low level vehicle GET request</td>
+            <td>command, qs</td>
+        </tr>
+        <tr>
+            <td>vehiclePost</td>
+            <td>Low level vehicle POST request</td>
+            <td>command, qs, body</td>
+        </tr>
+        <tr>
             <td>vehicles</td>
             <td>A list of all vehicles available in your account</td>
             <td></td>
@@ -231,7 +255,7 @@
         <tr>
             <td>vehicleData</td>
             <td>retrieve all vehicle state data in a single call</td>
-            <td></td>
+            <td>endpoints, let_sleep</td>
         </tr>
         <tr>
             <td>chargeState</td>
@@ -488,7 +512,7 @@
         <tr>
             <td>windowControl</td>
             <td>windowControl</td>
-            <td>command</td>
+            <td>command, lat, lon</td>
         </tr>
         <tr>
             <td>vinDecode</td>
