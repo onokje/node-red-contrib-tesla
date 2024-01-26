@@ -195,7 +195,9 @@ module.exports = function (RED) {
                 return tjs.getModel(await tjs.vehicleAsync({authToken, vehicleID}));
             case 'getPaintColor':
                 return tjs.getPaintColor(await tjs.vehicleAsync({authToken, vehicleID}));
-
+            case 'token':
+                return authToken;
+                
             default:
                 throw Error(`Tesla API: Invalid command specified: ${command}`);
         }
